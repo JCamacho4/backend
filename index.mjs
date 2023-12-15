@@ -29,12 +29,9 @@ app.listen(port, () => {
 // La dirección de deploy está en el fichero .env, si no se despliega, se usa localhost
 const clients = (process.env.CLIENTS && process.env.CLIENTS != "") ? process.env.CLIENTS : "http://localhost";
 
-// No es posible editar las variables de entorno una vez que se ha desplegado, y
-// no se puede saber la URL de despliegue hasta que se ha desplegado. Entonces:
-
 
 // si el servidor se encuentra desplegado, se usará la dirección de despliegue siguiente
-// const clients = "https://backend-theta-wine.vercel.app"
+// const clients = "https://backend-rho-eosin-74.vercel.app"
 
 // Ruta para comprobar el token de un usuario sin sobrecargar la API de Google
 // Cada petición del backend debe pasar por aquí previamente
