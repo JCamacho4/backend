@@ -27,7 +27,7 @@ app.listen(port, () => {
 });
 
 // La dirección de deploy está en el fichero .env, si no se despliega, se usa localhost
-const clients = process.env.CLIENTS != undefined ? process.env.CLIENTS : "http://localhost:5000";
+const clients = (process.env.CLIENTS && process.env.CLIENTS != "") ? process.env.CLIENTS : "http://localhost";
 
 // No es posible editar las variables de entorno una vez que se ha desplegado, y
 // no se puede saber la URL de despliegue hasta que se ha desplegado. Entonces:
@@ -77,7 +77,7 @@ const verifyTokenClientes = async (req, res, next) => {
     try {
         if (req.headers.authorization != process.env.GOOGLE_CLIENT_ID) {
             // Si esta caducado, se devuelve un código 401, que obliga al cliente a volver a hacer login
-            const response = await axios.get(`${clients}/verifyToken/${req.headers.authorization}`);
+            const response = await axios.get(`${clients}:5000/verifyToken/${req.headers.authorization}`);
             const user = response.data.user;
 
             // Si el usuario no es el mismo que el del token, se devuelve un código 402, que indica que no está autorizado
@@ -104,7 +104,7 @@ const verifyTokenEventos = async (req, res, next) => {
         if (req.headers.authorization != process.env.GOOGLE_CLIENT_ID) {
             // Si esta caducado, se devuelve un código 401, que obliga al cliente a volver a hacer login
             console.log(`${clients}:5000/verifyToken/${req.headers.authorization}`);
-            const response = await axios.get(`${clients}/verifyToken/${req.headers.authorization}`);
+            const response = await axios.get(`${clients}:5000/verifyToken/${req.headers.authorization}`);
             const user = response.data.user;
 
             // Si el usuario no es el mismo que el del token, se devuelve un código 402, que indica que no está autorizado
@@ -114,12 +114,10 @@ const verifyTokenEventos = async (req, res, next) => {
             // } else if (req.method == 'DELETE' && req.params.id == undefined) {
             //     res.status(402).send("Unauthorized action");
             //     return;
-            // }
-
-            next()
+            // }            
 
         }
-        next()
+            next()
 
     } catch {
         res.status(401).send({ error: "Invalid token" });
