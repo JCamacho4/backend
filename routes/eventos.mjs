@@ -179,7 +179,7 @@ app.post("/", async (req, res) => {
 
         // Comprobar campos necesarios para la creación y que siga siendo único 
 
-        if (!evento.anfitrion || !evento.descripcion || !evento.inicio || !evento.duracion || !evento.invitados) {
+        if (!evento.anfitrion || !evento.descripcion || !evento.inicio || !evento.duracion || !evento.invitados || !evento.coordenadas) {
             res.send("faltan campos").status(400);
             return;
         }
@@ -190,7 +190,8 @@ app.post("/", async (req, res) => {
             "descripcion": evento.descripcion,
             "inicio": new Date(evento.inicio),
             "duracion": evento.duracion,
-            "invitados": evento.invitados
+            "invitados": evento.invitados,
+            "coordenadas" : evento.coordenadas
         });
 
         res.send(result).status(201);
@@ -253,6 +254,34 @@ app.delete("/:id", async (req, res) => {
         const result = await eventosCollection.deleteOne({
             _id: new ObjectId(req.params.id)
         });
+
+        res.send(result).status(200);
+    } catch (err) {
+        res.send(err).status(500);
+    }
+});
+
+
+app.put("/:id/addImage", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const image = req.body.image;
+
+        if(!id || !image){
+            res.send("id y image son necesarios").status(400);
+            return;
+        } 
+
+        const result = await eventosCollection.updateOne(
+            {
+                _id: new ObjectId(id)
+            }, 
+            {
+                $push: {
+                    "images": image
+                }
+            }
+        );
 
         res.send(result).status(200);
     } catch (err) {
