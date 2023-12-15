@@ -104,7 +104,7 @@ const verifyTokenEventos = async (req, res, next) => {
     try {
         if (req.headers.authorization != process.env.GOOGLE_CLIENT_ID) {
             // Si esta caducado, se devuelve un código 401, que obliga al cliente a volver a hacer login
-            console.log(`${clients}/verifyToken/${req.headers.authorization}`);
+            // console.log(`${clients}/verifyToken/${req.headers.authorization}`);
             const response = await axios.get(`${clients}/verifyToken/${req.headers.authorization}`);
             const user = response.data.user;
 
