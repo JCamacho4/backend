@@ -77,7 +77,7 @@ const verifyTokenClientes = async (req, res, next) => {
     try {
         if (req.headers.authorization != process.env.GOOGLE_CLIENT_ID) {
             // Si esta caducado, se devuelve un código 401, que obliga al cliente a volver a hacer login
-            const response = await axios.get(`${clients}:5000/verifyToken/${req.headers.authorization}`);
+            const response = await axios.get(`${clients}/verifyToken/${req.headers.authorization}`);
             const user = response.data.user;
 
             // Si el usuario no es el mismo que el del token, se devuelve un código 402, que indica que no está autorizado
@@ -100,13 +100,12 @@ const verifyTokenClientes = async (req, res, next) => {
 }
 
 const verifyTokenEventos = async (req, res, next) => {
+    console.log("verificando token eventos");
     try {
         if (req.headers.authorization != process.env.GOOGLE_CLIENT_ID) {
-            res.status(401).send({ error: "Estoy en el verifyToken de eventos" });
-
             // Si esta caducado, se devuelve un código 401, que obliga al cliente a volver a hacer login
-            console.log(`${clients}:5000/verifyToken/${req.headers.authorization}`);
-            const response = await axios.get(`${clients}:5000/verifyToken/${req.headers.authorization}`);
+            console.log(`${clients}/verifyToken/${req.headers.authorization}`);
+            const response = await axios.get(`${clients}/verifyToken/${req.headers.authorization}`);
             const user = response.data.user;
 
             // Si el usuario no es el mismo que el del token, se devuelve un código 402, que indica que no está autorizado
@@ -119,7 +118,8 @@ const verifyTokenEventos = async (req, res, next) => {
             // }            
 
         }
-            next()
+        
+        next();
 
     } catch {
         res.status(401).send({ error: "Invalid token" });
