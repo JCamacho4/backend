@@ -34,7 +34,7 @@ app.listen(port, () => {
 
 
 // si el servidor se encuentra desplegado, se usará la dirección de despliegue siguiente
-const clients = "https://backend-theta-wine.vercel.app/"
+const clients = "https://backend-theta-wine.vercel.app"
 
 // Ruta para comprobar el token de un usuario sin sobrecargar la API de Google
 // Cada petición del backend debe pasar por aquí previamente
